@@ -1,4 +1,4 @@
- StudentStudyManager
+
   Student Study Manager
 
 A web app to help students manage tasks, notes, and their study timetable.
