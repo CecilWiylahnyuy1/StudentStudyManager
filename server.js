@@ -52,6 +52,51 @@ app.delete('/tasks/:id', (req, res) => {
   res.status(204).send();
 });
 
+// Temporary in-memory storage for notes
+let notes = [
+  { id: 1, subject: "Math", content: "Chapter 4 covers derivatives and their applications.", linkedTaskId: 1 }
+];
+
+// GET all notes
+app.get('/notes', (req, res) => {
+  res.json(notes);
+});
+
+// GET a single note by id
+app.get('/notes/:id', (req, res) => {
+  const note = notes.find(n => n.id === parseInt(req.params.id));
+  if (!note) return res.status(404).json({ message: "Note not found" });
+  res.json(note);
+});
+
+// POST a new note
+app.post('/notes', (req, res) => {
+  const newNote = {
+    id: notes.length + 1,
+    subject: req.body.subject,
+    content: req.body.content,
+    linkedTaskId: req.body.linkedTaskId || null
+  };
+  notes.push(newNote);
+  res.status(201).json(newNote);
+});
+
+// PUT (update) a note
+app.put('/notes/:id', (req, res) => {
+  const note = notes.find(n => n.id === parseInt(req.params.id));
+  if (!note) return res.status(404).json({ message: "Note not found" });
+  Object.assign(note, req.body);
+  res.json(note);
+});
+
+// DELETE a note
+app.delete('/notes/:id', (req, res) => {
+  notes = notes.filter(n => n.id !== parseInt(req.params.id));
+  res.status(204).send();
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
