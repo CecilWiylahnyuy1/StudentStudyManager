@@ -4,6 +4,8 @@ const PORT = 3000;
 
 app.use(express.json()); // lets the server read JSON from requests
 
+app.use(express.static('public'));
+
 app.get('/', (req, res) => {
   res.send('Student Study Manager API is running!');
 });
@@ -92,6 +94,50 @@ app.put('/notes/:id', (req, res) => {
 // DELETE a note
 app.delete('/notes/:id', (req, res) => {
   notes = notes.filter(n => n.id !== parseInt(req.params.id));
+  res.status(204).send();
+});
+
+// Temporary in-memory storage for timetable entries
+let timetable = [
+  { id: 1, day: "Monday", startTime: "16:00", endTime: "17:30", subject: "Math" }
+];
+
+// GET all timetable entries
+app.get('/timetable', (req, res) => {
+  res.json(timetable);
+});
+
+// GET a single timetable entry by id
+app.get('/timetable/:id', (req, res) => {
+  const entry = timetable.find(t => t.id === parseInt(req.params.id));
+  if (!entry) return res.status(404).json({ message: "Timetable entry not found" });
+  res.json(entry);
+});
+
+// POST a new timetable entry
+app.post('/timetable', (req, res) => {
+  const newEntry = {
+    id: timetable.length + 1,
+    day: req.body.day,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    subject: req.body.subject
+  };
+  timetable.push(newEntry);
+  res.status(201).json(newEntry);
+});
+
+// PUT (update) a timetable entry
+app.put('/timetable/:id', (req, res) => {
+  const entry = timetable.find(t => t.id === parseInt(req.params.id));
+  if (!entry) return res.status(404).json({ message: "Timetable entry not found" });
+  Object.assign(entry, req.body);
+  res.json(entry);
+});
+
+// DELETE a timetable entry
+app.delete('/timetable/:id', (req, res) => {
+  timetable = timetable.filter(t => t.id !== parseInt(req.params.id));
   res.status(204).send();
 });
 

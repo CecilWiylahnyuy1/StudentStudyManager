@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Study Manager</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Student Study Manager</h1>
+
+  <section>
+    <h2>Tasks</h2>
+    <form id="task-form">
+      <input type="text" id="task-title" placeholder="Task title" required>
+      <input type="text" id="task-subject" placeholder="Subject" required>
+      <input type="date" id="task-dueDate" required>
+      <button type="submit">Add Task</button>
+    </form>
+    <ul id="task-list"></ul>
+  </section>
+
+  <section>
+    <h2>Notes</h2>
+    <form id="note-form">
+      <input type="text" id="note-subject" placeholder="Subject" required>
+      <textarea id="note-content" placeholder="Note content" required></textarea>
+      <button type="submit">Add Note</button>
+    </form>
+    <ul id="note-list"></ul>
+  </section>
+
+  <section>
+    <h2>Timetable</h2>
+    <form id="timetable-form">
+      <input type="text" id="tt-day" placeholder="Day (e.g. Monday)" required>
+      <input type="time" id="tt-start" required>
+      <input type="time" id="tt-end" required>
+      <input type="text" id="tt-subject" placeholder="Subject" required>
+      <button type="submit">Add Timetable Entry</button>
+    </form>
+    <ul id="timetable-list"></ul>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
