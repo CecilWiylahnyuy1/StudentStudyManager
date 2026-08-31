@@ -3,6 +3,18 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json()); // lets the server read JSON from requests
+app.use(express.static('public'));
+
+const session = require('express-session');
+const bcrypt = require('bcrypt');
+
+app.use(session({
+  secret: 'study-manager-secret', // just a random string for now
+  resave: false,
+  saveUninitialized: false
+}));
+
+let users = []; // { id, username, passwordHash }
 
 app.use(express.static('public'));
 
@@ -141,7 +153,42 @@ app.delete('/timetable/:id', (req, res) => {
   res.status(204).send();
 });
 
+// Sign up
+app.post('/signup', async (req, res) => {
+  const { username, password } = req.body;
+  const existing = users.find(u => u.username === username);
+  if (existing) return res.status(400).json({ message: "Username already taken" });
 
+  const passwordHash = await bcrypt.hash(password, 10);
+  const newUser = { id: users.length + 1, username, passwordHash };
+  users.push(newUser);
+  res.status(201).json({ message: "Account created" });
+});
+
+// Log in
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const user = users.find(u => u.username === username);
+  if (!user) return res.status(401).json({ message: "Invalid username or password" });
+
+  const match = await bcrypt.compare(password, user.passwordHash);
+  if (!match) return res.status(401).json({ message: "Invalid username or password" });
+
+  req.session.userId = user.id;
+  res.json({ message: "Logged in", username: user.username });
+});
+
+// Log out
+app.post('/logout', (req, res) => {
+  req.session.destroy(() => res.json({ message: "Logged out" }));
+});
+
+// Check who's logged in
+app.get('/me', (req, res) => {
+  if (!req.session.userId) return res.status(401).json({ message: "Not logged in" });
+  const user = users.find(u => u.id === req.session.userId);
+  res.json({ username: user.username });
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
