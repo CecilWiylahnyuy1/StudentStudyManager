@@ -14,6 +14,19 @@ app.use(session({
   saveUninitialized: false
 }));
 
+function requireLogin(req, res, next) {
+  if (!req.session.userId) {
+    return res.status(401).json({ message: "You must be logged in" });
+  }
+  next();
+}
+app.get('/tasks', requireLogin, (req, res) => {
+  res.json(tasks);
+});
+
+app.post('/tasks', requireLogin, (req, res) => {
+  // ...same code as before
+});
 let users = []; // { id, username, passwordHash }
 
 app.use(express.static('public'));
