@@ -3,7 +3,7 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json()); // lets the server read JSON from requests
-app.use(express.static('public'));
+app.use(express.static('backend'));
 
 const session = require('express-session');
 const bcrypt = require('bcrypt');
@@ -29,7 +29,7 @@ app.post('/tasks', requireLogin, (req, res) => {
 });
 let users = []; // { id, username, passwordHash }
 
-app.use(express.static('public'));
+app.use(express.static('backend'));
 
 app.get('/', (req, res) => {
   res.send('Student Study Manager API is running!');
