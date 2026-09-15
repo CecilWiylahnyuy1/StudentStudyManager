@@ -1,5 +1,5 @@
 require('dotenv').config();
-ANTHROPIC_API_KEY=your-key-here
+ANTHROPIC_API_KEY=claude
 const express = require('express');
 const app = express();
 const PORT = 3000;
