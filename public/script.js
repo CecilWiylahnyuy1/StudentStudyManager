@@ -263,7 +263,7 @@ if (loginForm) {
     });
     const data = await res.json();
     if (res.ok) {
-      window.location.href = '/dashboard.html';
+      window.location.href = '/index.html';
     } else {
       document.getElementById('login-error').textContent = data.message;
     }
