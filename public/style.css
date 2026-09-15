@@ -277,3 +277,34 @@ li {
   75%  { transform: rotate(8deg) translateY(-4px); }
   100% { transform: rotate(0deg) translateY(0); }
 }
+
+/* ==========================================================================
+     Responsive breakpoints — mobile first
+     ========================================================================== */
+  
+  @media (min-width: 640px) {
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  
+  @media (min-width: 780px) {
+    .brand-tagline { display: inline; }
+    .nav-toggle { display: none; }
+    .nav-links {
+      display: flex;
+      flex-direction: row;
+      padding: 0;
+      background: none;
+      gap: 1.75rem;
+    }
+    .contact-layout { grid-template-columns: 3fr 2fr; }
+  }
+  
+  @media (min-width: 860px) {
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .footer-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  
+  @media (min-width: 1000px) {
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  }
